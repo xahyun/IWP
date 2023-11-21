@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaebcb7be9b2dc144900fa5ef92c5416, type: 3}
   m_Name: RedWand
   m_EditorClassIdentifier: 
-  DisplayName: RedWand
+  DisplayName: Red Wand
   Icon: {fileID: 21300000, guid: 891ffd5933d54f943a4dcb2926781184, type: 3}

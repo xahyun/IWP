@@ -4,15 +4,49 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject SlotPrefab;
+    public List<InventorySlot> inventorySlots = new List<InventorySlot>(10);
+
+    private void OnEnable()
     {
-        
+        Inventory.OnInventoryChange += DrawInventory;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        Inventory.OnInventoryChange -= DrawInventory;
+    }
+    void ResetInventory()
+    {
+        foreach(Transform childTransform in transform)
+        {
+            Destroy(childTransform.gameObject);
+        }
+        inventorySlots = new List<InventorySlot>(10);
+    }
+
+    void DrawInventory(List<InventoryItem> inventory)
+    {
+        ResetInventory();
+        for (int i = 0; i < inventorySlots.Capacity; i++)
+        {
+            CreateInventorySlot();
+        }
+
+        for (int i = 0; i< inventory.Count;i++)
+        {
+            inventorySlots[i].DrawSlot(inventory[i]);
+        }
+    }
+
+    void CreateInventorySlot()
+    {
+        GameObject newSlot = Instantiate(SlotPrefab);
+        newSlot.transform.SetParent(transform, false);
+
+        InventorySlot newSlotComponent = newSlot.GetComponent<InventorySlot>();
+        newSlotComponent.ClearSlot();
+
+        inventorySlots.Add(newSlotComponent);
     }
 }
