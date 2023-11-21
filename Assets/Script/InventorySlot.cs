@@ -19,15 +19,16 @@ public class InventorySlot : MonoBehaviour
 
     public void DrawSlot(InventoryItem item)
     {
-        if (item==null)
-        {
-            ClearSlot();
-            return;
-        }
+      
+        //if (item==null)
+        //{
+        //    Debug.Log(item.itemData.DisplayName);
+        //    ClearSlot();
+        //    return;
+        //}
         Icon.enabled = true;
         LabelText.enabled = true;
         StackSizeText.enabled = true;
-
         Icon.sprite = item.itemData.Icon;
         LabelText.text = item.itemData.DisplayName;
         StackSizeText.text = item.StackSize.ToString();
