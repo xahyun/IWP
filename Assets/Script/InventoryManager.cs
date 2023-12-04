@@ -4,50 +4,102 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    public GameObject SlotPrefab;
-    public List<InventorySlot> inventorySlots = new List<InventorySlot>(10);
+    public inventorySlot[] inventorySlots;
+    public GameObject InventoryItemPrefab;
+    public int maxStackItem = 10;
 
-    private void OnEnable()
+    int selectedSlot = -1;
+
+    public void Start()
     {
-        Inventory.OnInventoryChange += DrawInventory;
+        ChangeSelectedSlot(0);
     }
 
-    private void OnDisable()
+    private void Update()
     {
-        Inventory.OnInventoryChange -= DrawInventory;
-    }
-    void ResetInventory()
-    {
-        foreach(Transform childTransform in transform)
+        if (Input.inputString != null)
         {
-            Destroy(childTransform.gameObject);
-        }
-        inventorySlots = new List<InventorySlot>(10);
-    }
-
-    void DrawInventory(List<InventoryItem> inventory)
-    {
-        ResetInventory();
-        for (int i = 0; i < inventorySlots.Capacity; i++)
-        {
-            CreateInventorySlot();
+            bool isNumber = int.TryParse(Input.inputString, out int Number);
+            if (isNumber && Number > 0 && Number < 10)
+            {
+                ChangeSelectedSlot(Number - 1);
+            }
         }
 
-        for (int i = 0; i< inventory.Count;i++)
+    }
+    void ChangeSelectedSlot(int newValue)
+    {
+        if (selectedSlot >= 0)
         {
-
-            inventorySlots[i].DrawSlot(inventory[i]);
+            inventorySlots[selectedSlot].DeSelect();
         }
+
+        inventorySlots[newValue].Select();
+        selectedSlot = newValue;
+    }
+    public bool AddItem(Item item)
+    {
+        //check if any slot has the same item with count lower thn the max
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            inventorySlot slot = inventorySlots[i];
+            if(slot.transform.childCount<=0)
+            {
+                continue;
+            }
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+            if (itemInSlot != null &&
+                itemInSlot.item == item &&
+                itemInSlot.count < maxStackItem &&
+                itemInSlot.item.Stackable == true)
+            {
+                itemInSlot.count++;
+                itemInSlot.RefreshCount();
+                return true;
+            }
+        }
+        //find empty slot
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            inventorySlot slot = inventorySlots[i];
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+            if (itemInSlot == null)
+            {
+                SpawnNewItem(item, slot);
+                return true;
+            }
+        }
+        return false;
     }
 
-    void CreateInventorySlot()
+    void SpawnNewItem(Item item, inventorySlot slot)
     {
-        GameObject newSlot = Instantiate(SlotPrefab);
-        newSlot.transform.SetParent(transform, false);
+        GameObject newItemGO = Instantiate(InventoryItemPrefab, slot.transform);
+        InventoryItem inventoryItem = newItemGO.GetComponent<InventoryItem>();
+        inventoryItem.InitializeItem(item);
+    }
 
-        InventorySlot newSlotComponent = newSlot.GetComponent<InventorySlot>();
-        newSlotComponent.ClearSlot();
-
-        inventorySlots.Add(newSlotComponent);
+    public Item GetSelectedItem(bool use )
+    {
+        inventorySlot slot = inventorySlots[selectedSlot];
+        InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+        if (itemInSlot != null )
+        {
+            Item item = itemInSlot.item;
+            if (use == true)
+            {
+                itemInSlot.count--;
+                if(itemInSlot.count<=0)
+                {
+                    Destroy(itemInSlot.gameObject);
+                }
+                else
+                {
+                    itemInSlot.RefreshCount();
+                }    
+            }
+            return item;
+        }
+        return null;
     }
 }

@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class RedWand : MonoBehaviour, ICollectable
 {
-    public static event HandleWandCollected OnWandCollected;
-    public delegate void HandleWandCollected(ItemData itemData);
-    public ItemData wandData;
+    //public static event HandleWandCollected OnWandCollected;
+    //public delegate void HandleWandCollected(ItemData itemData);
+    //public ItemData wandData;
     public void Collect()
     {
         Debug.Log("Red wand collected");
         Destroy(gameObject);
-        OnWandCollected?.Invoke(wandData);
+       // OnWandCollected?.Invoke(wandData);
     }
 }

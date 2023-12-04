@@ -1,36 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour
+public class inventorySlot : MonoBehaviour, IDropHandler
 {
-    public Image Icon;
-    public TextMeshProUGUI LabelText;
-    public TextMeshProUGUI StackSizeText;
+    public Image image;
+    public Color SelectedColor, NotSelectedColor;
+    public bool craftableSlot = false;
 
-    public void ClearSlot()
+    private void Awake()
     {
-        Icon.enabled = false;
-        LabelText.enabled = false;
-        StackSizeText.enabled = false;
+        DeSelect();
+    }
+    public void Select()
+    {
+        image.color = SelectedColor;
     }
 
-    public void DrawSlot(InventoryItem item)
+    public void DeSelect()
     {
+        image.color = NotSelectedColor;
+    }
+    public void OnDrop(PointerEventData eventData)
+    {
+       if(transform.childCount == 0)
+       {
+            InventoryItem inventoryItem = eventData.pointerDrag.GetComponent<InventoryItem>();
+            inventoryItem.parentAfterDrag = transform;
       
-        //if (item==null)
-        //{
-        //    Debug.Log(item.itemData.DisplayName);
-        //    ClearSlot();
-        //    return;
-        //}
-        Icon.enabled = true;
-        LabelText.enabled = true;
-        StackSizeText.enabled = true;
-        Icon.sprite = item.itemData.Icon;
-        LabelText.text = item.itemData.DisplayName;
-        StackSizeText.text = item.StackSize.ToString();
+       }
     }
+
+
 }
