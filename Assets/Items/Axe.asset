@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Axe
   tile: {fileID: 0}
-  type: 0
+  type: 1
   actiontype: 0
   range: {x: 5, y: 4}
   Stackable: 0

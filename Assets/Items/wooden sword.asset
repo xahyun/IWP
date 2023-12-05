@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e61c4699ae0f6d47b94fb436faa49c6, type: 3}
-  m_Name: Shovel
+  m_Name: wooden sword
   m_EditorClassIdentifier: 
-  itemName: Shovel
+  itemName: wooden sword
   tile: {fileID: 0}
-  type: 0
+  type: 1
   actiontype: 0
   range: {x: 5, y: 4}
   Stackable: 0
-  image: {fileID: 21300000, guid: b3a67fc6bd9f6405ba5785b99c7d830a, type: 3}
+  image: {fileID: 21300000, guid: 17a9a8a2b8a83934194349be95770d00, type: 3}
