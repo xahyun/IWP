@@ -3,21 +3,38 @@ using UnityEngine.Tilemaps;
 
 public class BuildingSystem : MonoBehaviour
 {
-    [SerializeField] public Item item;
     [SerializeField] private TileBase highlightTile;
     [SerializeField] private Tilemap Ground;
     [SerializeField] private Tilemap Top;
+
+    [SerializeField] private GameObject lootPrefab;
 
     private Vector3Int playerPos;
     private Vector3Int highlightTilePos;
     private bool highlighted;
 
+    Item prevItem;
     private void Update()
     {
+        Item item = InventoryManager.instance.GetSelectedItem(false);
         playerPos = Ground.WorldToCell(transform.position);
         if(item!=null)
         {
             HighlightTile(item);
+        }
+        if(Input.GetMouseButtonDown(0))
+        {
+            if(highlighted)
+            {
+                if(item.type == Item.ItemType.BuildingBlocks)
+                {
+                    Build(highlightTilePos, item);
+                }
+                else if(item.type == Item.ItemType.Tools)
+                {
+                    Destroy(highlightTilePos);
+                }
+            }
         }
     }
 
@@ -35,17 +52,15 @@ public class BuildingSystem : MonoBehaviour
     {
         Vector3Int mouseGridPos = GetMouseOnGridPos();
 
-        if (highlightTilePos != mouseGridPos)
+        if (highlightTilePos != mouseGridPos || prevItem != currentItem)
         {
             Top.SetTile(highlightTilePos, null);
 
             if(InRange(playerPos, mouseGridPos, (Vector3Int)currentItem.range))
             {
-
-                if(CheckCondition(Ground.GetTile<RuleTileWithData>(mouseGridPos),currentItem))
+                if (CheckCondition(Ground.GetTile<RuleTileWithData>(mouseGridPos),currentItem))
                 {
                     Top.SetTile(mouseGridPos, highlightTile);
-                    highlightTilePos = mouseGridPos;
 
                     highlighted = true;
                 }
@@ -55,6 +70,8 @@ public class BuildingSystem : MonoBehaviour
                 }
             }
 
+            highlightTilePos = mouseGridPos;
+            prevItem = currentItem;
         }
     }
     private bool InRange(Vector3Int positionA, Vector3Int PositionB, Vector3Int range)
@@ -69,26 +86,51 @@ public class BuildingSystem : MonoBehaviour
     }
     private bool CheckCondition(RuleTileWithData tile, Item currentItem)
     {
-        if(currentItem.type == Item.ItemType.BuildingBlocks)
+        if (tile)
         {
-            if(!tile)
+            Debug.Log("123");
+        }
+        if (currentItem.type == Item.ItemType.BuildingBlocks)
+        {
+            if (!tile)
             {
                 return true;
             }
-            else if (currentItem.type == Item.ItemType.Tools)
+
+        }
+        else if (currentItem.type == Item.ItemType.Tools)
+        {
+            if (tile)
             {
-                if(tile)
+                if (tile.item.actiontype == currentItem.actiontype)
                 {
-                    if(tile.item.actiontype == currentItem.actiontype)
-                    {
-                        return true;
-                    }
+                    Debug.Log("asdasd");
+                    return true;
                 }
-
-
             }
         }
         return false;
     }
 
+    private void Build(Vector3Int position, Item itemToBuild)
+    {
+        Top.SetTile(position, null);
+        highlighted = false;
+
+        InventoryManager.instance.GetSelectedItem(true);
+        Ground.SetTile(position, itemToBuild.tile);
+    }
+
+    private void Destroy(Vector3Int position)
+    {
+        Top.SetTile(position, null);
+        highlighted = false;
+
+        RuleTileWithData tile = Ground.GetTile<RuleTileWithData>(position);
+        Ground.SetTile(position, null);
+
+        Vector3 pos = Ground.GetCellCenterWorld(position);
+        GameObject loot = Instantiate(lootPrefab, pos, Quaternion.identity);
+        loot.GetComponent<Loot>().Initialize(tile.dropItem);
+    }
 }

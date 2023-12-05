@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Axe
   tile: {fileID: 0}
   type: 1
-  actiontype: 0
+  actiontype: 1
   range: {x: 5, y: 4}
   Stackable: 0
-  image: {fileID: 21300000, guid: 4683e64797a364ad1adde74cc69b1ec9, type: 3}
+  image: {fileID: 21300000, guid: e9faa793d7b5bd64dbeebe8e9bd70f73, type: 3}

@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c164b3356baa7d449f997bd491a8bb5, type: 3}
-  m_Name: DiggingTreetile
+  m_Name: wood
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: -1954754019, guid: 750e9640b689b9049819742d22779c41, type: 3}
+  m_DefaultSprite: {fileID: -1138596324, guid: c9635b5491352c54092cdec00b484e0c, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules:
   - m_Id: 0
     m_Sprites:
-    - {fileID: -1954754019, guid: 750e9640b689b9049819742d22779c41, type: 3}
+    - {fileID: -1138596324, guid: c9635b5491352c54092cdec00b484e0c, type: 3}
     m_GameObject: {fileID: 0}
     m_MinAnimationSpeed: 1
     m_MaxAnimationSpeed: 1

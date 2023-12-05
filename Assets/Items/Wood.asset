@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Wood
   m_EditorClassIdentifier: 
   itemName: Wood
-  tile: {fileID: 11400000, guid: 1797ebdfc16c11b4ebb1a5824777eb51, type: 2}
+  tile: {fileID: 11400000, guid: 90de3e796c063f64ea946a3260c2a258, type: 2}
   type: 0
   actiontype: 0
   range: {x: 5, y: 4}
-  Stackable: 1
+  Stackable: 0
   image: {fileID: 514666115, guid: 025bf5ad995f3bd48898812b2cb8fb12, type: 3}

@@ -6,5 +6,5 @@ using UnityEngine;
 public class RuleTileWithData : RuleTile
 {
     public Item item;
-
+    public Item dropItem;
 }

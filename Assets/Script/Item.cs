@@ -23,12 +23,14 @@ public class Item : ScriptableObject
     public enum ItemType
     {
         BuildingBlocks,
-        Tools
+        Tools,
+        Crafting
     }
 
     public enum ActionType
     {
         Dig,
+        Chop,
         Mine
     }
 }
