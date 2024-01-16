@@ -86,6 +86,11 @@ public class craftingMan : MonoBehaviour
                     }
                     if ((field == "" && IS[i].transform.childCount == 0) || (field.ToLower() == IS[i].GetComponentInChildren<InventoryItem>().item.itemName.ToLower()))
                     {
+                        if(field!="")
+                        {
+
+                        Debug.Log(IS[i].transform.childCount + "asd");
+                        }
                         i++;
                         stuff = fields[10].ToString();
                         continue;
@@ -94,6 +99,7 @@ public class craftingMan : MonoBehaviour
                 }
                 if (stuff != "")
                 {
+
                     Crafted(stuff);
                     break;
                 }
@@ -133,8 +139,6 @@ public class craftingMan : MonoBehaviour
                 InventoryItem inventoryItem = item.transform.GetChild(0).GetComponent<InventoryItem>();
                 if (inventoryItem.count == 1)
                 {
-
-                    couldCraft = false;
                     Destroy(item.transform.GetChild(0).gameObject);
                 }
                 if (inventoryItem.count>1)
@@ -146,7 +150,13 @@ public class craftingMan : MonoBehaviour
             
             }
         }
-            crafting();
+        StartCoroutine(dealy());
+    }
+
+    IEnumerator dealy()
+    {
+        yield return new WaitForEndOfFrame();
+        crafting();
     }
 }
 
