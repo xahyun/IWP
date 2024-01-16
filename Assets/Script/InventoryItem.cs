@@ -10,10 +10,13 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 {
     public Image image;
     public TextMeshProUGUI CountText;
-
+    public bool split;
+    public bool ExtraGotDestroy;
     [HideInInspector] public Transform parentAfterDrag;
+    [HideInInspector] public Transform parentBeforeDrag;
     [HideInInspector] public Item item;
-    [HideInInspector] public int count = 1;
+    [HideInInspector] public double count = 1;
+    public GameObject extra;
 
     public void InitializeItem(Item newItem)
     {
@@ -25,44 +28,116 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void RefreshCount()
     {
         CountText.text = count.ToString();
+        Debug.Log(count);
         bool TextActive = count > 1;
         CountText.gameObject.SetActive(TextActive);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        image.raycastTarget = false;
-        parentAfterDrag = transform.parent;
-        if (transform.parent.name == "itemGot")
+        if(Input.GetMouseButton(1) && count>1)
         {
-            craftingMan.ins.DeleteAllCrafting();
+            double pickUP = count / 2;
+            pickUP = Math.Floor(pickUP);
+            Debug.LogError(pickUP);
+            count -= pickUP;
+            RefreshCount();
+            extra = Instantiate(gameObject, transform.position, Quaternion.identity) as GameObject;
+            extra.GetComponent<RectTransform>().sizeDelta = new Vector2(80, 80);
+            InventoryItem II = extra.GetComponent<InventoryItem>();
+            II.count = pickUP;
+            II.RefreshCount();
+            II.parentAfterDrag = transform.parent;
+
+            II.image.raycastTarget = false;
+            Debug.Log(extra.GetComponent<InventoryItem>().parentBeforeDrag);
+            extra.transform.SetParent(transform.root);
+            split = true;
         }
-        if (transform.parent.transform.parent.name == "Crafting")
+        else
         {
+            image.raycastTarget = false;
+            parentAfterDrag = transform.parent;
+            string PrevParentName = transform.parent.name;
+          
+            if (transform.parent.transform.parent.name == "Crafting")
+            {
+                transform.SetParent(transform.root);
+                craftingMan.ins.crafting();
+                return;
+            }
             transform.SetParent(transform.root);
-            craftingMan.ins.crafting();
-            return;
+            if (PrevParentName == "itemGot")
+            {
+                craftingMan.ins.DeleteAllCrafting();
+            }
+
         }
-        transform.SetParent(transform.root);
-     
+
+    }
+
+    private void Update()
+    {
+        if(split)
+        {
+            extra.transform.position = Input.mousePosition;
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = Input.mousePosition;
+        if(!split)
+        {
+            transform.position = Input.mousePosition;
+        }
     }
 
     public void OnEndDrag (PointerEventData eventData)
     {
-        image.raycastTarget = true;
-        transform.SetParent(parentAfterDrag);
-        //
-        if (parentAfterDrag.TryGetComponent<inventorySlot>(out inventorySlot IS))
+        if (!split)
         {
-            if(IS.craftableSlot)
+            image.raycastTarget = true;
+            transform.SetParent(parentAfterDrag);
+            if (parentAfterDrag.TryGetComponent<inventorySlot>(out inventorySlot IS))
             {
-                craftingMan.ins.crafting();
+                if (IS.craftableSlot)
+                {
+                    craftingMan.ins.crafting();
+                }
             }
         }
+        else
+        {
+            if (ExtraGotDestroy)
+            {
+                split = false;
+                return;
+            }
+
+            InventoryItem II = extra.GetComponent<InventoryItem>();
+
+            II.image.raycastTarget = true;
+            if (transform.parent == II.parentAfterDrag)
+            {
+                count += extra.GetComponent<InventoryItem>().count;
+                RefreshCount();
+                Destroy(extra);
+                split = false;
+                Debug.LogError("MoveBack");
+                return;
+            }
+
+            extra.transform.SetParent(II.parentAfterDrag);
+            if (II.parentAfterDrag.TryGetComponent<inventorySlot>(out inventorySlot IS))
+            {
+
+                if (IS.craftableSlot)
+                {
+                    craftingMan.ins.crafting();
+                }
+            }
+        }
+
+        split = false;
     }
 }

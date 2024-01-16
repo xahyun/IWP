@@ -86,10 +86,6 @@ public class BuildingSystem : MonoBehaviour
     }
     private bool CheckCondition(RuleTileWithData tile, Item currentItem)
     {
-        if (tile)
-        {
-            Debug.Log("123");
-        }
         if (currentItem.type == Item.ItemType.BuildingBlocks)
         {
             if (!tile)
@@ -102,9 +98,12 @@ public class BuildingSystem : MonoBehaviour
         {
             if (tile)
             {
+                if(currentItem.itemName == "Wand")
+                {
+                    currentItem.actiontype = tile.item.actiontype;
+                }
                 if (tile.item.actiontype == currentItem.actiontype)
                 {
-                    Debug.Log("asdasd");
                     return true;
                 }
             }

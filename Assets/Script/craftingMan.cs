@@ -8,17 +8,18 @@ public class craftingMan : MonoBehaviour
     public static craftingMan ins;
     public GameObject InventoryItemPrefab;
     public string craftingListr;
+
     public TextAsset TA;
     public List<inventorySlot> IS = new List<inventorySlot>();
     public inventorySlot built;
-
+    string csvFile;
     public List<Item> CraftedItem = new List<Item>();
 
     // Start is called before the first frame update
     void Start()
     {
-        craftingListr = "Assets/craftingList.csv";
-       // crafting();
+        csvFile = Path.Combine(Application.streamingAssetsPath, "craftingList.csv");
+        // crafting();
     }
     private void Awake()
     {
@@ -40,8 +41,9 @@ public class craftingMan : MonoBehaviour
         }
 
         // Open the file with a StreamReader
-        using (StreamReader reader = new StreamReader(craftingListr))
+        using (StreamReader reader = new StreamReader(csvFile))
         {
+
             int j = 0;
             // Read the file line by line
             while (!reader.EndOfStream)
@@ -105,10 +107,8 @@ public class craftingMan : MonoBehaviour
     {
         foreach (var item in CraftedItem)
         {
-            Debug.Log($"{stuff.ToLower()} :: {item.itemName.ToLower()}  ");
             if (item.itemName.ToLower() == stuff.ToLower())
             {
-                Debug.Log($"{stuff.ToLower()} :: {item.itemName.ToLower()}  ");
                 SpawnNewItem(item, built);
                 break;
             }
@@ -124,14 +124,29 @@ public class craftingMan : MonoBehaviour
 
     public void DeleteAllCrafting()
     {
+        bool couldCraft = false;
         foreach (var item in IS)
         {
-            Debug.Log(item.transform.childCount);
             if(item.transform.childCount>0)
             {
-                Destroy(item.transform.GetChild(0).gameObject);
+
+                InventoryItem inventoryItem = item.transform.GetChild(0).GetComponent<InventoryItem>();
+                if (inventoryItem.count == 1)
+                {
+
+                    couldCraft = false;
+                    Destroy(item.transform.GetChild(0).gameObject);
+                }
+                if (inventoryItem.count>1)
+                {
+                    inventoryItem.count--;
+                    couldCraft = true;
+                    inventoryItem.RefreshCount();
+                }
+            
             }
         }
+            crafting();
     }
 }
 

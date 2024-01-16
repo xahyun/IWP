@@ -19,6 +19,10 @@ public class Item : ScriptableObject
     [Header("Both")]
     public Sprite image;
  
+    public void Change(ActionType item)
+    {
+        actiontype = item;
+    }
 
     public enum ItemType
     {

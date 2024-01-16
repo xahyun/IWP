@@ -25,12 +25,40 @@ public class inventorySlot : MonoBehaviour, IDropHandler
     }
     public void OnDrop(PointerEventData eventData)
     {
-       if(transform.childCount == 0)
-       {
-            InventoryItem inventoryItem = eventData.pointerDrag.GetComponent<InventoryItem>();
+
+        InventoryItem inventoryItem = eventData.pointerDrag.GetComponent<InventoryItem>();
+        InventoryItem inventoryItemPrev = eventData.pointerDrag.GetComponent<InventoryItem>();
+        bool splitted = false ;
+        if(inventoryItem.split)
+        {
+            splitted = true;
+            inventoryItem = inventoryItem.extra.GetComponent<InventoryItem>();
+        }
+
+
+        if (transform.childCount > 0)
+        {
+            InventoryItem inventoryItemFromSlot = transform.GetChild(0).GetComponent<InventoryItem>();
+            if (inventoryItem.item.Stackable)
+            {
+                if (inventoryItem.item.itemName == inventoryItemFromSlot.item.itemName)
+                {
+                    if (splitted)
+                    {
+                        inventoryItemPrev.ExtraGotDestroy = true;
+                    }
+                    inventoryItemFromSlot.count += inventoryItem.count;
+                    inventoryItemFromSlot.RefreshCount();
+                    Destroy(inventoryItem.gameObject);
+                }
+            }
+        }
+        else
+        {
+
             inventoryItem.parentAfterDrag = transform;
-      
-       }
+        }
+        
     }
 
 
