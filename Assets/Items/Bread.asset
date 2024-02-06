@@ -16,7 +16,7 @@ MonoBehaviour:
   tile: {fileID: 0}
   type: 2
   actiontype: 2
-  damage: 10
+  damage: 1
   range: {x: 5, y: 4}
   Stackable: 1
   image: {fileID: 21300000, guid: 8b925813c22e033449d07b0027e27b7e, type: 3}

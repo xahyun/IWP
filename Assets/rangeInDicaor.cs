@@ -43,7 +43,7 @@ public class rangeInDicaor : MonoBehaviour
         Item i = InventoryManager.instance.GetSelectedItem(false);
         if(i==null)
         {
-            LR.positionCount = 0;
+            DrawCircle(600, 2);
             return;
         }
         if ( i.type== Item.ItemType.Wand || i.type == Item.ItemType.BuildingBlocks)

@@ -18,10 +18,9 @@ public class BuildingSystem : MonoBehaviour
     {
         Item item = InventoryManager.instance.GetSelectedItem(false);
         playerPos = Ground.WorldToCell(transform.position);
-        if(item!=null)
-        {
-            HighlightTile(item);
-        }
+
+        HighlightTile(item);
+  
         if(Input.GetMouseButtonDown(0))
         {
             if(highlighted)
@@ -43,7 +42,13 @@ public class BuildingSystem : MonoBehaviour
           
             if (highlighted)
             {
-                if (item.type == Item.ItemType.BuildingBlocks ||  (item.type == Item.ItemType.Wand))
+                Debug.LogError("asdasd");
+                if(item==null)
+                {
+                    Interect();
+                }
+
+                if (item.type == Item.ItemType.BuildingBlocks ||  (item.type == Item.ItemType.Wand && item.tile!=null))
                 {
                     Build(highlightTilePos, item);
                     
@@ -64,7 +69,7 @@ public class BuildingSystem : MonoBehaviour
     {
         Vector3Int mouseGridPos = GetMouseOnGridPos();
         RuleTileWithData RTWD=  Ground.GetTile<RuleTileWithData>(mouseGridPos);
-        RTWD.interect.interect();
+        RTWD.interect?.interect(mouseGridPos, Ground);
     }
 
     private Vector3Int GetMouseOnGridPos()
@@ -85,7 +90,8 @@ public class BuildingSystem : MonoBehaviour
         {
             Top.SetTile(highlightTilePos, null);
 
-            if(InRange(playerPos, mouseGridPos, currentItem.range))
+            Vector2 range = currentItem == null ?  new Vector2(2,1) : currentItem.range;
+            if (InRange(playerPos, mouseGridPos, range))
             {
                 if (CheckCondition(Ground.GetTile<RuleTileWithData>(mouseGridPos),currentItem))
                 {
@@ -115,7 +121,17 @@ public class BuildingSystem : MonoBehaviour
     }
     private bool CheckCondition(RuleTileWithData tile, Item currentItem)
     {
-   
+        Debug.LogError(currentItem);
+
+        if (currentItem == null)
+        {
+            if (tile && tile.interect != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         if (currentItem.type == Item.ItemType.BuildingBlocks)
         {
             if (!tile)
@@ -124,6 +140,7 @@ public class BuildingSystem : MonoBehaviour
             }
 
         }
+    
         else if (currentItem.type == Item.ItemType.Tools)
         {
             if (tile)
@@ -142,7 +159,7 @@ public class BuildingSystem : MonoBehaviour
         {
             if (tile)
             {
-                if (tile.item==null)
+                if (tile.item == null)
                 {
                     return true;
                 }
@@ -154,9 +171,14 @@ public class BuildingSystem : MonoBehaviour
             }
             else
             {
-                return true;
+                if (currentItem.tile != null)
+                {
+                    return true;
+
+                }
             }
         }
+   
      
         return false;
     }
@@ -165,7 +187,7 @@ public class BuildingSystem : MonoBehaviour
     {
         if(currentItem!=null)
         {
-            currentItem.interect.interect(currentItem);
+            currentItem.interect?.interect(currentItem);
         }
     }
 
@@ -188,10 +210,16 @@ public class BuildingSystem : MonoBehaviour
 
     private void Destroy(Vector3Int position)
     {
+        RuleTileWithData tile = Ground.GetTile<RuleTileWithData>(position);
+
+        if(tile.item==null)
+        {
+            return;
+        }
         Top.SetTile(position, null);
         highlighted = false;
 
-        RuleTileWithData tile = Ground.GetTile<RuleTileWithData>(position);
+     
         Ground.SetTile(position, null);
         audioManeger.ins.PlayAudio(1);
         Vector3 pos = Ground.GetCellCenterWorld(position);

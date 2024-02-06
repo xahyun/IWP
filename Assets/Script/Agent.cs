@@ -68,6 +68,10 @@ public class Agent : MonoBehaviour
             healthMan.health -= item.damage;
             Vector3 diff = transform.position - playerpos.position;
             rb2d.AddForce(diff * 500);
+
+            audioManeger.ins.PlayAudio(4);
+
+
             Debug.Log(diff);
         }
     }
