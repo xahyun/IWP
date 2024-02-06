@@ -20,7 +20,17 @@ public class Loot : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            bool canAdd = InventoryManager.instance.AddItem(item);
+            bool canAdd;
+            if (item.type==Item.ItemType.XP)
+            {
+                canAdd = true;
+                XP.xp.AddXP(Random.Range(5, 8));
+            }
+            else
+            {
+
+                canAdd = InventoryManager.instance.AddItem(item);
+            }
             if (canAdd)
             {
                 StartCoroutine(MoveAndCollect(other.transform));

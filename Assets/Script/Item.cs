@@ -11,13 +11,17 @@ public class Item : ScriptableObject
     public TileBase tile;
     public ItemType type;
     public ActionType actiontype;
-    public Vector2Int range = new Vector2Int(5, 4);
+
+    public int damage;
+    public Vector2 range;
 
     [Header("Only UI")]
     public bool Stackable = true;
         
     [Header("Both")]
     public Sprite image;
+
+    public Interect interect;
  
     public void Change(ActionType item)
     {
@@ -28,6 +32,9 @@ public class Item : ScriptableObject
     {
         BuildingBlocks,
         Tools,
+        Food,
+        XP,
+        Wand,
         Crafting
     }
 

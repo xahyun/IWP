@@ -84,6 +84,27 @@ public class InventoryManager : MonoBehaviour
         }
         return false;
     }
+    public RuleTileWithData Portal;
+    public bool GetWand(Item wand)
+    {
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            inventorySlot slot = inventorySlots[i];
+            if (slot.transform.childCount <= 0)
+            {
+                continue;
+            }
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+            if (itemInSlot.item.type == Item.ItemType.Wand)
+            {
+                Destroy(slot.transform.GetChild(0).gameObject);
+                SpawnNewItem(wand, slot);
+          
+                return true;
+            }
+        }
+        return false;
+    }
 
     void SpawnNewItem(Item item, inventorySlot slot)
     {
@@ -101,7 +122,10 @@ public class InventoryManager : MonoBehaviour
             Item item = itemInSlot.item;
             if (use == true)
             {
-                itemInSlot.count--;
+                if (itemInSlot.item.itemName != "Wand")
+                {
+                    itemInSlot.count--;
+                }
                 if(itemInSlot.count<=0)
                 {
                     Destroy(itemInSlot.gameObject);
@@ -114,5 +138,22 @@ public class InventoryManager : MonoBehaviour
             return item;
         }
         return null;
+    }
+
+    public void ClearInvAndReduceWand()
+    {
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            inventorySlot slot = inventorySlots[i];
+            if (slot.transform.childCount <= 0)
+            {
+                continue;
+            }
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+            if (itemInSlot.item.type != Item.ItemType.Wand)
+            {
+                Destroy(slot.transform.GetChild(0).gameObject);
+            }
+        }
     }
 }

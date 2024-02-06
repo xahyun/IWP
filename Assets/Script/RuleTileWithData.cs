@@ -7,4 +7,5 @@ public class RuleTileWithData : RuleTile
 {
     public Item item;
     public Item dropItem;
+    public Interect interect;
 }

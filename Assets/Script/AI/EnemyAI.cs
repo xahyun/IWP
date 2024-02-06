@@ -38,6 +38,8 @@ public class EnemyAI : MonoBehaviour
         InvokeRepeating("PerformDetection", 0, detectionDelay);
     }
 
+
+
     private void PerformDetection()
     {
         foreach (Detector detector in detectors)

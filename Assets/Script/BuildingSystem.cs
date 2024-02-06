@@ -26,16 +26,45 @@ public class BuildingSystem : MonoBehaviour
         {
             if(highlighted)
             {
-                if(item.type == Item.ItemType.BuildingBlocks)
+            
+                if(item.type == Item.ItemType.Tools|| item.type == Item.ItemType.Wand)
                 {
-                    Build(highlightTilePos, item);
-                }
-                else if(item.type == Item.ItemType.Tools)
-                {
-                    Destroy(highlightTilePos);
+                    Vector3Int mouseGridPos = GetMouseOnGridPos();
+                    RuleTileWithData RTWD = Ground.GetTile<RuleTileWithData>(mouseGridPos);
+                    if(RTWD)
+                    {
+                        Destroy(highlightTilePos);
+                    }
                 }
             }
         }
+        else if(Input.GetMouseButtonDown(1))
+        {
+          
+            if (highlighted)
+            {
+                if (item.type == Item.ItemType.BuildingBlocks ||  (item.type == Item.ItemType.Wand))
+                {
+                    Build(highlightTilePos, item);
+                    
+                }
+                else
+                {
+                    Interect();
+                }
+            }
+            else
+            {
+                ItemInterect(item);
+            }
+        }
+    }
+
+    protected virtual void Interect()
+    {
+        Vector3Int mouseGridPos = GetMouseOnGridPos();
+        RuleTileWithData RTWD=  Ground.GetTile<RuleTileWithData>(mouseGridPos);
+        RTWD.interect.interect();
     }
 
     private Vector3Int GetMouseOnGridPos()
@@ -56,7 +85,7 @@ public class BuildingSystem : MonoBehaviour
         {
             Top.SetTile(highlightTilePos, null);
 
-            if(InRange(playerPos, mouseGridPos, (Vector3Int)currentItem.range))
+            if(InRange(playerPos, mouseGridPos, currentItem.range))
             {
                 if (CheckCondition(Ground.GetTile<RuleTileWithData>(mouseGridPos),currentItem))
                 {
@@ -74,7 +103,7 @@ public class BuildingSystem : MonoBehaviour
             prevItem = currentItem;
         }
     }
-    private bool InRange(Vector3Int positionA, Vector3Int PositionB, Vector3Int range)
+    private bool InRange(Vector3Int positionA, Vector3Int PositionB, Vector2 range)
     {
         Vector3Int distance = positionA - PositionB;
 
@@ -86,6 +115,7 @@ public class BuildingSystem : MonoBehaviour
     }
     private bool CheckCondition(RuleTileWithData tile, Item currentItem)
     {
+   
         if (currentItem.type == Item.ItemType.BuildingBlocks)
         {
             if (!tile)
@@ -98,7 +128,7 @@ public class BuildingSystem : MonoBehaviour
         {
             if (tile)
             {
-                if(currentItem.itemName == "Wand")
+                if (currentItem.itemName == "Wand")
                 {
                     currentItem.actiontype = tile.item.actiontype;
                 }
@@ -108,16 +138,52 @@ public class BuildingSystem : MonoBehaviour
                 }
             }
         }
+        else if (currentItem.itemName == "Wand")
+        {
+            if (tile)
+            {
+                if (tile.item==null)
+                {
+                    return true;
+                }
+                currentItem.actiontype = tile.item.actiontype;
+                if (tile.item.actiontype == currentItem.actiontype)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+     
         return false;
+    }
+
+    void ItemInterect(Item currentItem)
+    {
+        if(currentItem!=null)
+        {
+            currentItem.interect.interect(currentItem);
+        }
     }
 
     private void Build(Vector3Int position, Item itemToBuild)
     {
+        if(itemToBuild.tile ==null)
+        {
+            return;
+        }
         Top.SetTile(position, null);
         highlighted = false;
-
+        audioManeger.ins.PlayAudio(6);
         InventoryManager.instance.GetSelectedItem(true);
         Ground.SetTile(position, itemToBuild.tile);
+        if (itemToBuild.itemName == "Wand")
+        {
+            itemToBuild.tile = null;
+        }
     }
 
     private void Destroy(Vector3Int position)
@@ -127,7 +193,7 @@ public class BuildingSystem : MonoBehaviour
 
         RuleTileWithData tile = Ground.GetTile<RuleTileWithData>(position);
         Ground.SetTile(position, null);
-
+        audioManeger.ins.PlayAudio(1);
         Vector3 pos = Ground.GetCellCenterWorld(position);
         GameObject loot = Instantiate(lootPrefab, pos, Quaternion.identity);
         loot.GetComponent<Loot>().Initialize(tile.dropItem);

@@ -67,13 +67,20 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector2(moveDirection.x * MovementSpeed, moveDirection.y * MovementSpeed);
         if(rb.velocity!=Vector2.zero)
         {
+            hungerBar.hb.SpeedUP(false);
             anim.SetBool("moving", true);
         }
         else
         {
-
+            hungerBar.hb.SpeedUP(true);
             anim.SetBool("moving", false);
         }
         
     }
+
+    public void ForceBack(Vector3 dir)
+    {
+        rb.AddForce(-dir);
+    }
+
 }

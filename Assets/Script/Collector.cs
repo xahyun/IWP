@@ -10,6 +10,7 @@ public class Collector : MonoBehaviour
         if(collectible != null)
         {
             collectible.Collect();
+            audioManeger.ins.PlayAudio(7);
         }
     }
 }
