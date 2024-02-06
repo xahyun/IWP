@@ -17,7 +17,7 @@ MonoBehaviour:
   type: 2
   actiontype: 2
   damage: 10
-  range: {x: 5, y: 4}
+  range: {x: 0, y: 0}
   Stackable: 1
   image: {fileID: -1374451026, guid: 673da06933374de49b4de0ffcc998c3a, type: 3}
   interect: {fileID: 11400000, guid: 5cf56bda96033384e87c349e8b5e611e, type: 2}

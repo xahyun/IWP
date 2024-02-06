@@ -36,26 +36,22 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = new Vector2(moveX, moveY).normalized;
         if (moveY>0)
         {
-            Debug.Log("up");
             anim.SetFloat("dir", 2);
             anim.SetInteger("MoveDir", 2);
         }
         else if (moveY < 0)
         {
-            Debug.Log("down");
             anim.SetFloat("dir", 0);
             anim.SetInteger("MoveDir", 0);
         }
         if (moveX > 0)
         {
-            Debug.Log("right");
             anim.SetFloat("dir", 3);
 
             anim.SetInteger("MoveDir", 3);
         }
         else if (moveX < 0)
         {
-            Debug.Log("left");
             anim.SetFloat("dir", 1);
 
             anim.SetInteger("MoveDir", 1);

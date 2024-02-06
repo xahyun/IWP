@@ -16,5 +16,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1047711db425bbe4b8c8d5e3471823b6, type: 2}
   - {fileID: 11400000, guid: 4f4e6c13f511c1e4692bf9788d23e8d5, type: 2}
   - {fileID: 11400000, guid: 4bfceb096b9dd1445876a968de11a673, type: 2}
-  - {fileID: 11400000, guid: 4bfceb096b9dd1445876a968de11a673, type: 2}
+  - {fileID: 11400000, guid: 65a892a384a5b474989d958996a0eb5f, type: 2}
+  - {fileID: 11400000, guid: 962d97ad2adf5044ca137e561e0540dd, type: 2}
+  - {fileID: 11400000, guid: 97c83d62cb7ea1f4fa01fff9293dd191, type: 2}
+  - {fileID: 11400000, guid: e58bdeac46aed3445b6eee992b0ea0cb, type: 2}
+  - {fileID: 11400000, guid: a05a376d712e1e14a870986eabe51c13, type: 2}
+  - {fileID: 11400000, guid: 766ca063cf4109f46847641f2bbb269a, type: 2}
+  - {fileID: 11400000, guid: a45c9ec2f69b1e8498ca7d1c64d4150d, type: 2}
   Loot: {fileID: 6832146286182008818, guid: 6f194a01a2ff79f42b53f3c510eedeed, type: 3}

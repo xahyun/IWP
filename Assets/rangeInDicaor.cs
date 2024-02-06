@@ -46,7 +46,7 @@ public class rangeInDicaor : MonoBehaviour
             DrawCircle(600, 2);
             return;
         }
-        if ( i.type== Item.ItemType.Wand || i.type == Item.ItemType.BuildingBlocks)
+        if ( i.type== Item.ItemType.Wand || i.type == Item.ItemType.BuildingBlocks || i.type == Item.ItemType.Tools)
         {
             DrawCircle(600,i.range.x);
         }

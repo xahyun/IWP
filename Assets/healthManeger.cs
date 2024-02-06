@@ -15,6 +15,7 @@ public class healthManeger : MonoBehaviour
     [SerializeField] GameObject textmesh;
     [SerializeField] GameObject Loot;
     [SerializeField] Item XP;
+    [SerializeField] List<Item> itemToDrop = new List<Item>();
     public float health
     {
         get { return hp; }
@@ -54,10 +55,15 @@ public class healthManeger : MonoBehaviour
             for (int i = 0; i < Random.Range(5,8); i++)
             {
                 Vector3 pos = Random.insideUnitCircle;
-                GameObject loot=Instantiate(Loot,transform.position+ pos, Quaternion.identity);
+                GameObject xp=Instantiate(Loot,transform.position+ pos, Quaternion.identity);
 
-                loot.GetComponent<Loot>().Initialize(XP);
+                xp.GetComponent<Loot>().Initialize(XP);
             }
+            Vector3 pos1 = Random.insideUnitCircle;
+            GameObject loot = Instantiate(Loot, transform.position + pos1, Quaternion.identity);
+
+            loot.GetComponent<Loot>().Initialize(itemToDrop[Random.Range(0,itemToDrop.Count)]);
+
             Destroy(gameObject);
         }
     }

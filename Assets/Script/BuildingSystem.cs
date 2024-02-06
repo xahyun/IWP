@@ -90,7 +90,7 @@ public class BuildingSystem : MonoBehaviour
         {
             Top.SetTile(highlightTilePos, null);
 
-            Vector2 range = currentItem == null ?  new Vector2(2,1) : currentItem.range;
+            Vector2 range = currentItem == null ?  new Vector2(2,2) : currentItem.range;
             if (InRange(playerPos, mouseGridPos, range))
             {
                 if (CheckCondition(Ground.GetTile<RuleTileWithData>(mouseGridPos),currentItem))
@@ -121,7 +121,6 @@ public class BuildingSystem : MonoBehaviour
     }
     private bool CheckCondition(RuleTileWithData tile, Item currentItem)
     {
-        Debug.LogError(currentItem);
 
         if (currentItem == null)
         {

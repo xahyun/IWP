@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Goldwand
   m_EditorClassIdentifier: 
   itemName: Wand
-  tile: {fileID: 11400000, guid: a9ec806f5a22abe4b9c1344d18967f48, type: 2}
+  tile: {fileID: 0}
   type: 4
   actiontype: 1
   damage: 3
-  range: {x: 3, y: 2}
+  range: {x: 3, y: 3}
   Stackable: 0
   image: {fileID: 21300000, guid: e636348ac866344438c5c3d85e134ad3, type: 3}
   interect: {fileID: 0}
