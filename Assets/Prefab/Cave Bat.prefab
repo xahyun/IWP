@@ -652,7 +652,7 @@ GameObject:
   - component: {fileID: 8156150210819643395}
   - component: {fileID: 8156150210819643420}
   - component: {fileID: 8156150210819643394}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cave Bat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -882,6 +882,9 @@ MonoBehaviour:
   playerpos: {fileID: 0}
   ES: {fileID: 0}
   dmg: 3
+  hurt: {r: 1, g: 0, b: 0, a: 1}
+  IsPosion: {r: 0, g: 1, b: 0, a: 1}
+  normal: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &8156150210819643394
 MonoBehaviour:
   m_ObjectHideFlags: 0

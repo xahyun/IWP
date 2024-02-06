@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: sand
   m_EditorClassIdentifier: 
   itemName: sand
-  tile: {fileID: 0}
+  tile: {fileID: 11400000, guid: 86f190d72d1652c45948f2dfe388b9aa, type: 2}
   type: 0
   actiontype: 0
   damage: 0

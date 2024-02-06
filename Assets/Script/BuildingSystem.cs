@@ -88,6 +88,7 @@ public class BuildingSystem : MonoBehaviour
 
         if (highlightTilePos != mouseGridPos || prevItem != currentItem)
         {
+            highlighted = false;
             Top.SetTile(highlightTilePos, null);
 
             Vector2 range = currentItem == null ?  new Vector2(2,2) : currentItem.range;
