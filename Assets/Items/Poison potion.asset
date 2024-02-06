@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e61c4699ae0f6d47b94fb436faa49c6, type: 3}
-  m_Name: Poision potion
+  m_Name: Poison potion
   m_EditorClassIdentifier: 
-  itemName: poision potion
+  itemName: poison potion
   tile: {fileID: 0}
   type: 1
   actiontype: 2

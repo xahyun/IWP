@@ -16,6 +16,6 @@ MonoBehaviour:
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []
-  item: {fileID: 0}
-  dropItem: {fileID: 0}
+  item: {fileID: 11400000, guid: f4cf7284b4dbb904c8c0e43d2a5c726c, type: 2}
+  dropItem: {fileID: 11400000, guid: 4bfceb096b9dd1445876a968de11a673, type: 2}
   interect: {fileID: 0}
